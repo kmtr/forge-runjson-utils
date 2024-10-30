@@ -1,66 +1,50 @@
-## Foundry
+# Forge Run JSON Utils
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This utility script helps you to develop your solidity application in forge.  
 
-Foundry consists of:
+## getLatestContractAddress
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+`getLatestContractAddress` returns the latest contract address from `broadcast/**/run-latest.json`.
 
-## Documentation
+### setup
 
-https://book.getfoundry.sh/
+1: add this line to `foundry.toml` in your forge project to read the `run-latest.json`.
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```toml
+fs_permissions = [{ access = "read", path = "./broadcast"}]
 ```
 
-### Test
+2: add this repository as a git submodule
 
-```shell
-$ forge test
+```sh
+# run on your project root
+git submodule add https://github.com/kmtr/forge-runjson-utils lib/forge-runjson-utils
 ```
 
-### Format
+3: add this mapping to remappings.txt
 
-```shell
-$ forge fmt
+```
+forge-runjson-utils/=lib/forge-runjson-utils/src/
 ```
 
-### Gas Snapshots
+4: Use the function
 
-```shell
-$ forge snapshot
-```
+`Deployment.s.sol` in the sample code is a deploy script.
+You have to run the deploy script before use `getLatestContractAddress`.
 
-### Anvil
+```solidity
+import "forge-std/Script.sol";
+import "forge-runjson-utils/RunJsonUtils.s.sol"
 
-```shell
-$ anvil
-```
+contract YourScript is Script {
+    function setUp() public {}
 
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+    function run() public {
+        address contractAddress = getLatestContractAddress(
+            vm,
+            "Deployment.s.sol"
+        );
+        console.log(contractAddress);
+    }
+}
 ```
