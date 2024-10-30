@@ -17,16 +17,4 @@ contract CounterTest is Test {
         vm.expectRevert(bytes(message));
         getLatestContractAddress(vm, "NotFound.s.sol");
     }
-
-    /*
-    function test_Increment() public {
-        counter.increment();
-        assertEq(counter.number(), 1);
-    }
-
-    function testFuzz_SetNumber(uint256 x) public {
-        counter.setNumber(x);
-        assertEq(counter.number(), x);
-    }
-    */
 }
