@@ -13,10 +13,7 @@ contract CounterTest is Test {
     }
 
     function test_RevertWhenScriptDirIsNotFound() public {
-        string memory message = string.concat(
-            vm.projectRoot(),
-            "/broadcast/NotFound.s.sol is not found"
-        );
+        string memory message = string.concat(vm.projectRoot(), "/broadcast/NotFound.s.sol is not found");
         vm.expectRevert(bytes(message));
         getLatestContractAddress(vm, "NotFound.s.sol");
     }

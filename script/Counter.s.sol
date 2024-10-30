@@ -34,7 +34,6 @@ contract Run is Script {
     function setUp() public {}
 
     function run() public {
-
         address counterAddress = getLatestContractAddress(vm, "Counter.s.sol");
         Counter counter = Counter(counterAddress);
         counter.setNumber(5);
